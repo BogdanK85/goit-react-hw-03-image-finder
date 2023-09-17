@@ -1,13 +1,13 @@
 import { Component } from 'react';
 import { fetchNewPictures } from 'API/API';
-import { ToastContainer, toast } from 'react-toastify';
 import { SectionApp } from 'components/SectionApp/SectionApp';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
-import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { LoadMoreBtn } from 'components/Button/Button';
 import { Spiner } from 'components/Loader/Loader';
 import { Modal } from 'components/Modal/Modal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -16,8 +16,8 @@ export class App extends Component {
     perPage: 12,
 
     images: [],
-    webformatUrl: [],
-    largeImageUrl: '',
+    webformatURL: [],
+    largeImageURL: '',
     isLoading: false,
     showModal: false,
   };
@@ -31,12 +31,12 @@ export class App extends Component {
   }
 
   fetchPictures = async () => {
-    const { seachQuery, page, perPage } = this.state;
+    const { searchQuery, page } = this.state;
 
     try {
       this.setState({ isLoading: true });
 
-      const newPictures = await fetchNewPictures(seachQuery, page, perPage);
+      const newPictures = await fetchNewPictures(searchQuery, page);
 
       if (page === 1) {
         this.setState({ images: newPictures.hits });
@@ -69,7 +69,7 @@ export class App extends Component {
     this.setState({
       searchQuery: searchQuery.toLowerCase().trim(),
       page: 1,
-      pictures: [],
+      images: [],
     });
   };
 
@@ -83,9 +83,9 @@ export class App extends Component {
     }));
   };
 
-  onPictureClick = largeImageUrl => {
-    this.setState({ largeImageUrl });
-    this.onModalChenge();
+  onPictureClick = largeImageURL => {
+    this.setState({ largeImageURL });
+    this.onModalChange();
   };
 
   render() {
@@ -110,12 +110,7 @@ export class App extends Component {
           <ImageGallery
             newPictures={this.state.images}
             onClick={this.onPictureClick}
-          >
-            <ImageGalleryItem
-              images={this.state.images}
-              showModal={this.onPictureClick}
-            />
-          </ImageGallery>
+          />
 
           {this.state.images.length > 0 && (
             <LoadMoreBtn
@@ -131,7 +126,7 @@ export class App extends Component {
           {this.state.showModal && (
             <Modal
               showModal={this.state.showModal}
-              largeImageUrl={this.state.largeImageUrl}
+              largeImageURL={this.state.largeImageURL}
               newPictures={this.state.images}
             />
           )}

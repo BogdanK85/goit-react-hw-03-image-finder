@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 import {
   FormStyle,
   HeaderStyle,
@@ -8,6 +7,8 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
+
 export class Searchbar extends Component {
   state = {
     searchQuery: '',
@@ -24,10 +25,10 @@ export class Searchbar extends Component {
       return;
     }
     this.props.onSubmit(this.state.searchQuery);
-    this.onFormReset();
+    this.formReset();
   };
 
-  onFormReset = () => {
+  formReset = () => {
     this.setState({ searchQuery: '' });
   };
 

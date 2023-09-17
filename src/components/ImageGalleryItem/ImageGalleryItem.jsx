@@ -1,9 +1,27 @@
-import { ImageGalleryItemPicture } from './ImageGalleryItem.styled';
+import {
+  ImageGalleryItemPicture,
+  ImageGalleryItemStyle,
+} from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ images, showModal }) => {
-  return images.map(({ id, webformatURL, largePictureURL }) => (
-    <ImageGalleryItem key={id} onClick={() => showModal(largePictureURL)}>
-      <ImageGalleryItemPicture src={webformatURL} alt="pixabay" />
-    </ImageGalleryItem>
-  ));
+export const ImageGalleryItem = ({
+  id,
+  webformatURL,
+  largeImageURL,
+  onClick,
+}) => {
+  return (
+    <ImageGalleryItemStyle key={id}>
+      <span>foto</span>
+      {/* <ImageGalleryItemPicture
+        src={webformatURL}
+        alt="pixabay"
+        width="360"
+        height="240"
+        loading="lazy"
+        onClick={() => {
+          onClick(largeImageURL);
+        }}
+      /> */}
+    </ImageGalleryItemStyle>
+  );
 };

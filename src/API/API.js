@@ -19,16 +19,16 @@ const BASE_URL = 'https://pixabay.com/api/';
 //   return response.data;
 // }
 
-export const fetchNewPictures = async (serchQuery, page, perPage) => {
+export const fetchNewPictures = async (serchQuery, page) => {
   const response = await axios.get(BASE_URL, {
-    parameters: {
+    params: {
       key: MY_API_KEY,
       q: serchQuery,
       image_type: 'photo',
       orientation: 'horisontal',
       safesearch: true,
       page: page,
-      per_page: perPage,
+      per_page: 12,
     },
   });
   return response.data;
