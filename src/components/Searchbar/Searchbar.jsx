@@ -7,7 +7,7 @@ import {
   SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled';
-
+import 'react-toastify/dist/ReactToastify.css';
 export class Searchbar extends Component {
   state = {
     searchQuery: '',
@@ -28,7 +28,7 @@ export class Searchbar extends Component {
   };
 
   onFormReset = () => {
-    this.state({ searchQuery: '' });
+    this.setState({ searchQuery: '' });
   };
 
   render() {
@@ -54,8 +54,8 @@ export class Searchbar extends Component {
 
             <SearchFormInput
               type="text"
-              autocomplete="off"
-              autofocus
+              autoComplete="off"
+              autoFocus
               placeholder="Search images and pictures"
               onChange={this.onFormChange}
               value={this.state.searchQuery}

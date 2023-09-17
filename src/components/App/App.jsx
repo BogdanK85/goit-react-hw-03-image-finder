@@ -2,6 +2,12 @@ import { Component } from 'react';
 import { fetchNewPictures } from 'API/API';
 import { ToastContainer, toast } from 'react-toastify';
 import { SectionApp } from 'components/SectionApp/SectionApp';
+import { Searchbar } from 'components/Searchbar/Searchbar';
+import { ImageGallery } from 'components/ImageGallery/ImageGallery';
+import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import { LoadMoreBtn } from 'components/Button/Button';
+import { Spiner } from 'components/Loader/Loader';
+import { Modal } from 'components/Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -33,10 +39,10 @@ export class App extends Component {
       const newPictures = await fetchNewPictures(seachQuery, page, perPage);
 
       if (page === 1) {
-        this.setState({ pictures: newPictures.hits });
+        this.setState({ images: newPictures.hits });
       } else {
         this.setState(prevState => ({
-          pictures: [...prevState.pictures, ...newPictures.hits],
+          images: [...prevState.images, ...newPictures.hits],
         }));
       }
 
@@ -47,7 +53,9 @@ export class App extends Component {
       }
     } catch (error) {
       toast.error('Does not have pictures at your request. Please try agein..');
-      this.setState({ errer: error.message });
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
@@ -65,7 +73,24 @@ export class App extends Component {
     });
   };
 
+  onLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  onModalChange = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  onPictureClick = largeImageUrl => {
+    this.setState({ largeImageUrl });
+    this.onModalChenge();
+  };
+
   render() {
+    // const { error, images, isLoading, showModal, modalPictures } = this.state;
+
     return (
       <>
         <ToastContainer
@@ -82,6 +107,34 @@ export class App extends Component {
         />
         <SectionApp>
           <Searchbar onSubmit={this.onFormSubmit} />
+          <ImageGallery
+            newPictures={this.state.images}
+            onClick={this.onPictureClick}
+          >
+            <ImageGalleryItem
+              images={this.state.images}
+              showModal={this.onPictureClick}
+            />
+          </ImageGallery>
+
+          {this.state.images.length > 0 && (
+            <LoadMoreBtn
+              onClick={this.onLoadMore}
+              isVisible={!this.state.isLoading}
+            />
+          )}
+
+          {this.state.isLoading && (
+            <Spiner loading={this.state.isLoading} size={125} />
+          )}
+
+          {this.state.showModal && (
+            <Modal
+              showModal={this.state.showModal}
+              largeImageUrl={this.state.largeImageUrl}
+              newPictures={this.state.images}
+            />
+          )}
         </SectionApp>
       </>
     );
