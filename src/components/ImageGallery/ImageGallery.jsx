@@ -1,11 +1,11 @@
-import { ImageGalleryItemStyle } from 'components/ImageGalleryItem/ImageGalleryItem.styled';
+import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryStyle } from './ImageGallery.styled';
 
 export const ImageGallery = ({ newPictures, onClick }) => {
   return (
     <ImageGalleryStyle>
       {newPictures.map(({ webformatURL, largeImageURL, id }) => (
-        <ImageGalleryItemStyle
+        <ImageGalleryItem
           key={id}
           webformatURL={webformatURL}
           largeImageURL={largeImageURL}

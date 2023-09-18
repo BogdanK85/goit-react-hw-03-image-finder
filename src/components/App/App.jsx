@@ -5,7 +5,7 @@ import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { LoadMoreBtn } from 'components/Button/Button';
 import { Spiner } from 'components/Loader/Loader';
-import { Modal } from 'components/Modal/Modal';
+import Modal from '../Modal/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -77,19 +77,21 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  onModalChange = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
+  // onModalChange = () => {
+  //   this.setState(({ showModal }) => ({
+  //     showModal: !showModal,
+  //   }));
+  // };
 
   onPictureClick = largeImageURL => {
-    this.setState({ largeImageURL });
-    this.onModalChange();
+    this.setState({ isLoading: true, largeImageURL, showModal: true });
+    // this.onModalChange();
   };
-
+  onCloseModalClick = () => {
+    this.setState({ isLoading: false, showModal: false });
+  };
   render() {
-    // const { error, images, isLoading, showModal, modalPictures } = this.state;
+    const { images, isLoading, showModal, largeImageURL } = this.state;
 
     return (
       <>
@@ -107,27 +109,20 @@ export class App extends Component {
         />
         <SectionApp>
           <Searchbar onSubmit={this.onFormSubmit} />
-          <ImageGallery
-            newPictures={this.state.images}
-            onClick={this.onPictureClick}
-          />
+          <ImageGallery newPictures={images} onClick={this.onPictureClick} />
 
-          {this.state.images.length > 0 && (
-            <LoadMoreBtn
-              onClick={this.onLoadMore}
-              isVisible={!this.state.isLoading}
-            />
+          {images.length > 0 && (
+            <LoadMoreBtn onClick={this.onLoadMore} isVisible={!isLoading} />
           )}
 
-          {this.state.isLoading && (
-            <Spiner loading={this.state.isLoading} size={125} />
-          )}
+          {isLoading && <Spiner loading={isLoading} size={125} />}
 
-          {this.state.showModal && (
+          {showModal && (
             <Modal
-              showModal={this.state.showModal}
-              largeImageURL={this.state.largeImageURL}
-              newPictures={this.state.images}
+              // showModal={showModal}
+              largeImageURL={largeImageURL}
+              newPictures={images}
+              onCloseModalClick={this.onCloseModalClick}
             />
           )}
         </SectionApp>
