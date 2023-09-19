@@ -29,33 +29,3 @@ export default class ImageGalleryItem extends Component {
     );
   }
 }
-
-// import {
-//   ImageGalleryItemPicture,
-//   ImageGalleryItemStyle,
-// } from './ImageGalleryItem.styled';
-
-// export const ImageGalleryItem = ({
-//   id,
-//   webformatURL,
-//   largeImageURL,
-//   onClick,
-//   onPictureClick,
-// }) => {
-//   return (
-//     <ImageGalleryItemStyle key={id}>
-//       <a href={largeImageURL}>
-//         <ImageGalleryItemPicture
-//           src={webformatURL}
-//           alt="pixabay"
-//           width="360"
-//           height="240"
-//           loading="lazy"
-//           onClick={() => {
-//             onPictureClick(largeImageURL);
-//           }}
-//         />
-//       </a>
-//     </ImageGalleryItemStyle>
-//   );
-// };

@@ -5,9 +5,9 @@ import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { LoadMoreBtn } from 'components/Button/Button';
 import { Spiner } from 'components/Loader/Loader';
-import Modal from '../Modal/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'components/Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -77,17 +77,18 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  // onModalChange = () => {
-  //   this.setState(({ showModal }) => ({
-  //     showModal: !showModal,
-  //   }));
-  // };
+  onModalChange = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
 
   onPictureClick = largeImageURL => {
     this.setState({ isLoading: true, largeImageURL, showModal: true });
     // this.onModalChange();
   };
   onCloseModalClick = () => {
+    console.log('Modal is closing');
     this.setState({ isLoading: false, showModal: false });
   };
   render() {
@@ -122,7 +123,7 @@ export class App extends Component {
               // showModal={showModal}
               largeImageURL={largeImageURL}
               newPictures={images}
-              onCloseModalClick={this.onCloseModalClick}
+              onClose={this.onCloseModalClick}
             />
           )}
         </SectionApp>

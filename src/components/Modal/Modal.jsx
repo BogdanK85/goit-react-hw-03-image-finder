@@ -7,12 +7,12 @@ const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDownClickEsc);
-    // document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDownClickEsc);
-    // document.body.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
   }
 
   onKeyDownClickEsc = event => {
@@ -22,7 +22,7 @@ export default class Modal extends Component {
   };
 
   onBackdropClick = event => {
-    if (event.currentTarget === event.target) {
+    if (event.target === event.currentTarget) {
       this.props.onClose();
     }
   };
