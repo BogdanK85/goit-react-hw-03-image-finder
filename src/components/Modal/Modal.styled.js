@@ -2,8 +2,8 @@ import { styled } from 'styled-components';
 
 export const OverlayStyle = styled.div`
   position: fixed;
-  top: 550;
-  left: 550;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   display: flex;

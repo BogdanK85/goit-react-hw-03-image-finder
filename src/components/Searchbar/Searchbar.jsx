@@ -24,7 +24,7 @@ export class Searchbar extends Component {
       toast.info('field must be filled in');
       return;
     }
-    this.props.onSubmit(this.state.searchQuery);
+    this.props.onSubmit(this.state.searchQuery.toLowerCase().trim());
     this.formReset();
   };
 

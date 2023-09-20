@@ -7,23 +7,26 @@ const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDownClickEsc);
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDownClickEsc);
-    document.body.style.overflow = 'auto';
+    // document.body.style.overflow = 'auto';
   }
+  onCloseModal = () => {
+    this.setState({ showModal: false });
+  };
 
   onKeyDownClickEsc = event => {
     if (event.code === 'Escape') {
-      this.props.onClose();
+      this.props.onCloseModal();
     }
   };
 
   onBackdropClick = event => {
     if (event.target === event.currentTarget) {
-      this.props.onClose();
+      this.props.onCloseModal();
     }
   };
 
@@ -35,7 +38,7 @@ export default class Modal extends Component {
     return createPortal(
       <OverlayStyle onClick={this.onBackdropClick}>
         <ModalStyle>
-          <img src={this.props.url} alt="Pixabay" />
+          <img src={this.props.largeImageURL} alt="Pixabay" />
         </ModalStyle>
       </OverlayStyle>,
       modalRoot

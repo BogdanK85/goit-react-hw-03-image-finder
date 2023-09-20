@@ -1,3 +1,4 @@
+import Modal from 'components/Modal/Modal';
 import { Component } from 'react';
 import {
   ImageGalleryItemPicture,
@@ -6,17 +7,28 @@ import {
 
 export default class ImageGalleryItem extends Component {
   state = {
-    largeImageURL: this.props.largeImageURL,
+    isShowModal: false,
   };
-  handleImgClick = () => {
-    this.props.onClick(this.state);
+
+  showModal = () => {
+    this.setState({ isShowModal: true });
   };
+  onCloseModal = () => {
+    this.setState({ isShowModal: false });
+  };
+
+  onImgClick = evt => {
+    evt.preventDefault();
+    this.showModal();
+    // this.props.onClick(this.state);
+  };
+
   render() {
     const { webformatURL, largeImageURL } = this.props;
 
     return (
-      <ImageGalleryItemStyle onClick={this.handleImgClick}>
-        <a href={largeImageURL}>
+      <>
+        <ImageGalleryItemStyle onClick={this.onImgClick}>
           <ImageGalleryItemPicture
             src={webformatURL}
             alt="pixabay"
@@ -24,8 +36,15 @@ export default class ImageGalleryItem extends Component {
             height="240"
             loading="lazy"
           />
-        </a>
-      </ImageGalleryItemStyle>
+        </ImageGalleryItemStyle>
+        {this.state.isShowModal && (
+          <Modal
+            largeImageURL={largeImageURL}
+            // newPictures={images}
+            onCloseModal={this.onCloseModal}
+          />
+        )}
+      </>
     );
   }
 }

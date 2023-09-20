@@ -7,7 +7,6 @@ import { LoadMoreBtn } from 'components/Button/Button';
 import { Spiner } from 'components/Loader/Loader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Modal from 'components/Modal/Modal';
 
 export class App extends Component {
   state = {
@@ -17,9 +16,10 @@ export class App extends Component {
 
     images: [],
     webformatURL: [],
-    largeImageURL: '',
+    // largeImageURL: '',
     isLoading: false,
-    showModal: false,
+    // showModal: false,
+    isShowLoadMoreBtn: false,
   };
 
   componentDidUpdate(_, prevState) {
@@ -36,21 +36,22 @@ export class App extends Component {
     try {
       this.setState({ isLoading: true });
 
-      const newPictures = await fetchNewPictures(searchQuery, page);
-
-      if (page === 1) {
-        this.setState({ images: newPictures.hits });
-      } else {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...newPictures.hits],
-        }));
-      }
+      const newPictures = await fetchNewPictures(
+        searchQuery,
+        page,
+        this.perPage
+      );
 
       if (newPictures.hits.length > 0 && page === 1) {
         toast.success('Your picture found!');
       } else if (newPictures.hits.length === 0) {
         throw new Error();
       }
+      this.setState(prevState => ({
+        images: [...prevState.images, ...newPictures.hits],
+        isShowLoadMoreBtn:
+          this.state.page < Math.ceil(newPictures.totalHits / 12),
+      }));
     } catch (error) {
       toast.error('Does not have pictures at your request. Please try agein..');
       this.setState({ error: error.message });
@@ -60,14 +61,11 @@ export class App extends Component {
   };
 
   onFormSubmit = searchQuery => {
-    if (
-      this.state.searchQuery.toLowerCase().trim() ===
-      searchQuery.toLowerCase().trim()
-    ) {
+    if (this.state.searchQuery === searchQuery) {
       return toast.warn(`You are viewing ${searchQuery}`);
     }
     this.setState({
-      searchQuery: searchQuery.toLowerCase().trim(),
+      searchQuery: searchQuery,
       page: 1,
       images: [],
     });
@@ -77,22 +75,18 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  onModalChange = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
-
+  // onModalChange = () => {
+  //   this.setState(({ showModal }) => ({
+  //     showModal: !showModal,
+  //   }));
+  // };
   onPictureClick = largeImageURL => {
     this.setState({ isLoading: true, largeImageURL, showModal: true });
     // this.onModalChange();
   };
-  onCloseModalClick = () => {
-    console.log('Modal is closing');
-    this.setState({ isLoading: false, showModal: false });
-  };
+
   render() {
-    const { images, isLoading, showModal, largeImageURL } = this.state;
+    const { images, isLoading } = this.state;
 
     return (
       <>
@@ -110,22 +104,18 @@ export class App extends Component {
         />
         <SectionApp>
           <Searchbar onSubmit={this.onFormSubmit} />
-          <ImageGallery newPictures={images} onClick={this.onPictureClick} />
-
           {images.length > 0 && (
+            <ImageGallery
+              newPictures={images}
+              onPictureClick={this.onPictureClick}
+            />
+          )}
+
+          {this.state.isShowLoadMoreBtn && (
             <LoadMoreBtn onClick={this.onLoadMore} isVisible={!isLoading} />
           )}
 
           {isLoading && <Spiner loading={isLoading} size={125} />}
-
-          {showModal && (
-            <Modal
-              // showModal={showModal}
-              largeImageURL={largeImageURL}
-              newPictures={images}
-              onClose={this.onCloseModalClick}
-            />
-          )}
         </SectionApp>
       </>
     );
