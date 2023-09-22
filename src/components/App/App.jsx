@@ -16,9 +16,7 @@ export class App extends Component {
 
     images: [],
     webformatURL: [],
-    // largeImageURL: '',
     isLoading: false,
-    // showModal: false,
     isShowLoadMoreBtn: false,
   };
 
@@ -75,14 +73,8 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  // onModalChange = () => {
-  //   this.setState(({ showModal }) => ({
-  //     showModal: !showModal,
-  //   }));
-  // };
   onPictureClick = largeImageURL => {
-    this.setState({ isLoading: true, largeImageURL, showModal: true });
-    // this.onModalChange();
+    this.setState({ isLoading: true, largeImageURL, isShowModal: true });
   };
 
   render() {

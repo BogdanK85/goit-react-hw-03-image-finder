@@ -7,16 +7,11 @@ const modalRoot = document.querySelector('#modal-root');
 export default class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDownClickEsc);
-    // document.body.style.overflow = 'hidden';
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDownClickEsc);
-    // document.body.style.overflow = 'auto';
   }
-  onCloseModal = () => {
-    this.setState({ showModal: false });
-  };
 
   onKeyDownClickEsc = event => {
     if (event.code === 'Escape') {
@@ -29,11 +24,9 @@ export default class Modal extends Component {
       this.props.onCloseModal();
     }
   };
-
-  //   onCloseClick = event => {
-  //     this.props.onClose();
-  //   };
-
+  onCloseModal = () => {
+    this.props.onCloseModal();
+  };
   render() {
     return createPortal(
       <OverlayStyle onClick={this.onBackdropClick}>

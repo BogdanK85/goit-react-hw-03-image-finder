@@ -10,17 +10,18 @@ export default class ImageGalleryItem extends Component {
     isShowModal: false,
   };
 
-  showModal = () => {
-    this.setState({ isShowModal: true });
+  // showModal = () => {
+  //   this.setState({ isShowModal: true });
+  // };
+  // onCloseModal = () => {
+  //   this.setState({ isShowModal: false });
+  // };
+  toggleModal = () => {
+    this.setState(prevState => ({ isShowModal: !prevState.isShowModal }));
   };
-  onCloseModal = () => {
-    this.setState({ isShowModal: false });
-  };
-
   onImgClick = evt => {
     evt.preventDefault();
-    this.showModal();
-    // this.props.onClick(this.state);
+    this.toggleModal();
   };
 
   render() {
@@ -40,8 +41,7 @@ export default class ImageGalleryItem extends Component {
         {this.state.isShowModal && (
           <Modal
             largeImageURL={largeImageURL}
-            // newPictures={images}
-            onCloseModal={this.onCloseModal}
+            onCloseModal={this.toggleModal}
           />
         )}
       </>
